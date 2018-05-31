@@ -51,7 +51,8 @@ public class DBuNomi extends SQLiteOpenHelper{
                 "('22' , 'bahagia', 'uNomi juga sama :) ') , " +
                 "('23' , 'sedih', 'Kenapa kamu sedih? :( ') , " +
                 "('24' , 'apa masalahmu', 'Masalahku hanyalah kamu') , " +
-                "('25' , 'mati', 'Hargai hidupmu, berjuang, bersyukur dan teruslah hidup')";
+                "('25' , 'mati', 'Hargai hidupmu, berjuang, bersyukur dan teruslah hidup')" +
+                "('26' , 'hai', 'Hai juga ^-^')";
 
         db.execSQL(query);
     }
