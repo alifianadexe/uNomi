@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -14,18 +15,23 @@ import android.widget.EditText;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
+import alifianadexe.unomi.baseactivity.AppBaseActivity;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppBaseActivity {
 
     private RecyclerView mMessageRecycler;
     private MessageListAdapter mMessageAdapter;
     private Button btn_send;
     private EditText txt_send;
+
     DBuNomi db;
     Cursor cursor;
     UserMessage message;
-
+    int randomNum = 1;
     ArrayList<UserMessage> messageList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +46,11 @@ public class MainActivity extends AppCompatActivity {
         initData();
 
         mMessageRecycler = (RecyclerView) findViewById(R.id.recycler_view_message_list);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        mMessageRecycler.setLayoutManager(layoutManager);
+
+        final LinearLayoutManager mLinierLayout = new LinearLayoutManager(this);
+        //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+
+        mMessageRecycler.setLayoutManager(mLinierLayout);
 
         mMessageAdapter = new MessageListAdapter(messageList,this);
         mMessageRecycler.setAdapter(mMessageAdapter);
@@ -52,28 +61,76 @@ public class MainActivity extends AppCompatActivity {
                 message = new UserMessage(txt_send.getText().toString(),new User("","",MessageListAdapter.TYPE_FOR_SENDER), Calendar.getInstance().getTimeInMillis());
                 messageList.add(message);
 
-                String query = "SELECT * FROM tbl_question WHERE question = '" + txt_send.getText().toString().toLowerCase() +"'";
+                String tanya =  txt_send.getText().toString().toLowerCase().trim();
+
+                String query = "SELECT * FROM tbl_question WHERE question LIKE '%" + tanya +"%'";
                 SQLiteDatabase database = db.getReadableDatabase();
                 cursor = database.rawQuery(query,null);
                 cursor.moveToFirst();
 
-                if(cursor.getCount()>0){
-                    cursor.moveToPosition(0);
-                    message = new UserMessage(cursor.getString(2).toString(),new User("uNomi","",MessageListAdapter.TYPE_FOR_RECEIVED), Calendar.getInstance().getTimeInMillis());
-                    messageList.add(message);
-                    mMessageAdapter.notifyDataSetChanged();
+                try{
+                    if(cursor.getCount() > 0){
+                        if(cursor.getCount() > 1) {
+                            cursor.moveToPosition(0);
+                            ArrayList<String> answer = new ArrayList<String>();
+                            while (cursor.moveToNext()) {
+                                answer.add(cursor.getString(2));
+                                Log.d("CURSOR", cursor.getString(2));
+                            }
+                            Random random = new Random();
+                            int  total = answer.size();
+                            int rand_temp  = random.nextInt(total) - 1;
 
-                }else{
-                    message = new UserMessage("Maaf , uNomi tidak paham apa yang kamu katakan",new User("uNomi","",MessageListAdapter.TYPE_FOR_RECEIVED), Calendar.getInstance().getTimeInMillis());
-                    messageList.add(message);
-                    mMessageAdapter.notifyDataSetChanged();
+                            while (randomNum == rand_temp){
+                                rand_temp = random.nextInt(total) - 1;
+                                Log.d("RAND TEMP", rand_temp + "");
+                            }
 
+                            randomNum = rand_temp;
+                            Log.d("CURSOR", randomNum + "");
+
+                            if(randomNum < 0){
+                                randomNum = total - 1;
+                            }
+//                        Log.d("TOTAL", cursor.getCount() + "");
+//
+//                        if(randomNum == cursor.getCount()){
+//                            randomNum = randomNum - 1;
+//                        }
+
+
+                            message = new UserMessage(answer.get(randomNum).toString(), new User("uNomi","",MessageListAdapter.TYPE_FOR_RECEIVED), Calendar.getInstance().getTimeInMillis());
+                            messageList.add(message);
+                            mMessageAdapter.notifyDataSetChanged();
+                        }else{
+                            cursor.moveToPosition(0);
+                            message = new UserMessage(cursor.getString(2).toString(),new User("uNomi","",MessageListAdapter.TYPE_FOR_RECEIVED), Calendar.getInstance().getTimeInMillis());
+                            messageList.add(message);
+                            mMessageAdapter.notifyDataSetChanged();
+                        }
+                    }else{
+                        message = new UserMessage("Maaf , uNomi tidak paham apa yang kamu katakan",new User("uNomi","",MessageListAdapter.TYPE_FOR_RECEIVED), Calendar.getInstance().getTimeInMillis());
+                        messageList.add(message);
+                        mMessageAdapter.notifyDataSetChanged();
+
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
 
                 hideKeyboard();
-
+                mMessageRecycler.smoothScrollToPosition(messageList.size()+1);
+                Log.d("MESSAGE LIST",messageList.size()+"");
             }
         });
+
+
+//        mMessageAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+//            @Override
+//            public void onItemRangeInserted(int positionStart, int itemCount) {
+//                mLinierLayout.smoothScrollToPosition(mMessageRecycler,null, mMessageAdapter.getItemCount());
+//            }
+//        });
 
     }
 

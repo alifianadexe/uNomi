@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/unomi"
+        android:title="uNomi"
+        android:icon="@android:drawable/ic_popup_sync"
+        app:itemTextColor="#fff"
+        ></item>
 
+    <item
+        android:id="@+id/setting"
+        android:title="Setting"
+        android:icon="@android:drawable/ic_lock_lock"
+        app:itemTextColor="#fff"
+        />
+    <item
+        android:id="@+id/dev"
+        android:title="Developer"
+        android:icon ="@android:drawable/ic_input_add"
+        app:itemTextColor="#fff"
+        />
 </menu>
