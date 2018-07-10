@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DBuNomi extends SQLiteOpenHelper{
 
     private static final String DATABASE_NAME = "unomi.db";
-    private static final int    DATABASE_VERSION = 9;
+    private static final int    DATABASE_VERSION = 10;
 
 
 
@@ -122,9 +122,12 @@ public class DBuNomi extends SQLiteOpenHelper{
                 "('88' , 'mikirin dia' , 'Aduduh, udah mulai cinta - cinta an nihh .-. '), "+
                 "('89' , 'mikirin dia' , 'Jangan dipikirin, pikirin uNomi aja  '), "+
                 "('90' , 'mu' , 'Setan Merah? Manchester United?'), "+
-                "('91' , 'musik' , 'Mau di nyanyiin apa? :) ')";
-
-
+                "('91' , 'musik' , 'Mau di nyanyiin apa? :) ')," +
+                "('92' , 'bro' , 'Yoi, bro!')," +
+                "('93' , 'dhevan' , 'Cowok cantique idolaquee :*')," +
+                "('93' , 'dhevan' , 'Dia pernah jahad sama aque :( :*')," +
+                "('93' , 'bagus' , 'Si pendiam tapi berwibawa')," +
+                "('93' , 'hamid' , 'Cowok harem sama adek kelas')";
 
 
 

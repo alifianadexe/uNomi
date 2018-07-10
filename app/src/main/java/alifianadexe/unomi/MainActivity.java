@@ -109,7 +109,7 @@ public class MainActivity extends AppBaseActivity {
                             mMessageAdapter.notifyDataSetChanged();
                         }
                     }else{
-                        message = new UserMessage("Maaf , uNomi tidak paham apa yang kamu katakan",new User("uNomi","",MessageListAdapter.TYPE_FOR_RECEIVED), Calendar.getInstance().getTimeInMillis());
+                        message = new UserMessage("Maaf, uNomi tidak paham apa yang kamu katakan",new User("uNomi","",MessageListAdapter.TYPE_FOR_RECEIVED), Calendar.getInstance().getTimeInMillis());
                         messageList.add(message);
                         mMessageAdapter.notifyDataSetChanged();
 
@@ -136,7 +136,7 @@ public class MainActivity extends AppBaseActivity {
 
     public void initData(){
 
-        UserMessage message = new UserMessage("Hai,aku uNomi! Senang berkenalan denganmu..",new User("uNomi","",102), Calendar.getInstance().getTimeInMillis());
+        UserMessage message = new UserMessage("Hai,Aku uNomi! Bot AI dengan beberapa kemampuan berinteraksi dengan chat. Kalian bisa bertanya tentang apa saja denganku.",new User("uNomi","",102), Calendar.getInstance().getTimeInMillis());
 
         messageList.add(message);
     }
